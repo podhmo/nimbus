@@ -82,3 +82,42 @@ render(template, person=pd)
 # <dt>性別</dt><dd>Female</dd>
 # </dl>
 ```
+
+## 変わった使い方
+
+### 属性がオブジェクトなオブジェクト
+
+```py
+class Pair(object):
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+
+
+class PairDisplay(Display):
+    left = display_property("left", label="Left", mapping=PersonDisplay)
+    right = display_property("right", label="Right", mapping=PersonDisplay)
+
+pair_display = PairDisplay(person, Person("bar",30,"F"))
+pair_display.left.label # => "Left"
+pair_display.left.value.name.value # => "foo"
+pair_display.right.value.name.value # => "bar"
+```
+
+### 親-子関係(1:N)を持つオブジェクト
+
+```py
+class Team(object):
+    def __init__(self, members):
+        self.members = members
+
+
+class TeamDisplay(Display):
+    member = display_property("members", label="Members", mapping=list_display(PersonDisplay))
+
+
+team = Team([person, person, person])
+team_display = TeamDisplay(team)
+for p in team_display.member.value:
+    print(p) #person
+```

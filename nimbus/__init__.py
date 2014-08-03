@@ -125,6 +125,12 @@ class Display(object):
             setattr(f, attrname, params.get(f._name, default))
 
 
+def list_display(display_cls):
+    def _list_display(xs):
+        return [display_cls(x) for x in xs]
+    return _list_display
+
+
 ###
 class Person(object):
     def __init__(self, name, age, gender):
@@ -164,7 +170,7 @@ class Team(object):
 
 @as_display(Team)
 class TeamDisplay(Display):
-    children = display_property("members", label="Members", mapping=lambda v: [PersonDisplay(p) for p in v])
+    member = display_property("members", label="Members", mapping=list_display(PersonDisplay))
 
 
 person = Person("foo", 20, "F")
@@ -195,7 +201,7 @@ print("---")
 
 team = Team([person, person, person])
 teamd = get_display(team)
-for p in teamd.children.value:
+for p in teamd.member.value:
     print(p)
 
 
