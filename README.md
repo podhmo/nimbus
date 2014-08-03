@@ -85,6 +85,14 @@ render(template, person=pd)
 
 ## 変わった使い方
 
+### エラー内容を各属性に注入する
+
+```py
+pd = PersonDisplay(person)
+pd.inject("error", {"name": "booo"})
+print(pd.name.error) # => boo
+```
+
 ### 属性がオブジェクトなオブジェクト
 
 ```py
