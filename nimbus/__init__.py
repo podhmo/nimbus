@@ -92,12 +92,18 @@ class DisplayProperty(object):
 
     def __get__(self, instance, type=None):
         subject = instance.subject
+        if "." in self.name:
+            names = self.name.split(".")
+            for k in names[:-1]:
+                subject = getattr(subject, k)
+            name = names[-1]
+        else:
+            name = self.name
         try:
             return self.refs[subject]
         except KeyError:
-            v = self.refs[subject] = self.field_factory(subject, self.name, self.options.copy())
+            v = self.refs[subject] = self.field_factory(subject, name, self.options.copy())
             return v
-
 
 display_property = DisplayPropertyFactory(DisplayField)
 

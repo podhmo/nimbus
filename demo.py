@@ -88,3 +88,26 @@ for p in teamd.member.value:
 
 print(serialize_json(teamd))
 print(serialize_json(paird))
+
+
+class Foo(object):
+    def __init__(self, name, boo):
+        self.name = name
+        self.boo = boo
+
+
+class Boo(object):
+    def __init__(self, name):
+        self.name = name
+
+
+class FooDisplay(Display):
+    foo_name = display_property("name", label="FooName")
+    boo_name = display_property("boo.name", label="BooName")
+
+foo = Foo("foo", Boo("boo"))
+foo_display = FooDisplay(foo)
+print("Label={} name={}".format(foo_display.foo_name.label,
+                                foo_display.foo_name.value))  # => Label=FooName name=foo
+print("Label={} name={}".format(foo_display.boo_name.label,
+                                foo_display.boo_name.value))  # => Label=BooName name=boo
