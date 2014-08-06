@@ -57,7 +57,7 @@ def humanize(v):
     return "Female"  # xxx:
 
 
-class PersonDisplay(Display):
+class PersonDisplay(MonitoringDisplay):
     name = display_property("name", label=u"名前")
     age = display_property("age", label=u"年齢")
     gender = display_property("gender", label=u"性別", mapping=humanize)  # xxx:
@@ -99,7 +99,7 @@ class Boo(object):
         self.name = name
 
 
-class FooDisplay(Display):
+class FooDisplay(MonitoringDisplay):
     foo_name = display_property("name", label="FooName")
     boo_name = display_property("boo.name", label="BooName")
 
@@ -129,7 +129,7 @@ class Pair(object):
         self.right = right
 
 
-class PairDisplay(Display):
+class PairDisplay(MonitoringDisplay):
     left = display_property("left", label="Left", mapping=PersonDisplay)
     right = display_property("right", label="Right", mapping=PersonDisplay)
 
@@ -147,7 +147,7 @@ class Team(object):
         self.members = members
 
 
-class TeamDisplay(Display):
+class TeamDisplay(MonitoringDisplay):
     member = display_property("members", label="Members", mapping=list_display(PersonDisplay))
 
 

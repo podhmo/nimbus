@@ -108,7 +108,7 @@ class DisplayProperty(object):
 display_property = DisplayPropertyFactory(DisplayField)
 
 
-class Display(object):
+class MonitoringDisplay(object):
     def __init__(self, subject):
         self.subject = subject
 
@@ -146,7 +146,7 @@ def _serialize_json(display, D):
         v = f.value
         if isinstance(v, (list, tuple)):
             D[f._name] = [_serialize_json(e, {}) for e in v]
-        elif isinstance(v, Display):
+        elif isinstance(v, MonitoringDisplay):
             D[f._name] = _serialize_json(v, {})
         else:
             D[f._name] = v

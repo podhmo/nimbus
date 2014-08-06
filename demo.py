@@ -5,7 +5,7 @@ from nimbus import (
     get_display_class,
     get_display,
     as_display,
-    Display,
+    MonitoringDisplay,
     display_property,
     compute,
     list_display,
@@ -25,7 +25,7 @@ def humanize(v):
 
 
 @as_display(Person)
-class PersonDisplay(Display):
+class PersonDisplay(MonitoringDisplay):
     name = display_property("name", label="Name",
                             href=compute(lambda name: "http://example.com/person/{}".format(name)))
     age = display_property("age", label="Age")
@@ -39,7 +39,7 @@ class Pair(object):
 
 
 @as_display(Pair)
-class PairDisplay(Display):
+class PairDisplay(MonitoringDisplay):
     left = display_property("left", label="Left", mapping=get_display_class(Person))
     right = display_property("right", label="Right", mapping=get_display_class(Person))
 
@@ -50,7 +50,7 @@ class Team(object):
 
 
 @as_display(Team)
-class TeamDisplay(Display):
+class TeamDisplay(MonitoringDisplay):
     member = display_property("members", label="Members", mapping=list_display(PersonDisplay))
 
 
@@ -101,7 +101,7 @@ class Boo(object):
         self.name = name
 
 
-class FooDisplay(Display):
+class FooDisplay(MonitoringDisplay):
     foo_name = display_property("name", label="FooName")
     boo_name = display_property("boo.name", label="BooName")
 
