@@ -165,7 +165,8 @@ for p in team_display.member.value:
 Formオブジェクトのようなもの
 
 ```py
-from nimbus.validators import Validation, ValidatableDisplay
+from nimbus.validators import Validation
+from nimbus import ValidatableDisplay
 from functools import partial
 
 Int = Validation(int).message("not integer")
@@ -226,7 +227,7 @@ print("""
 
 ネストしたdictからformを生成
 
-```
+```py
 class PairForm(ValidatableDisplay):
     left = object_field("left", label="Left", mapping=PointForm)
     right = object_field("right", label="Right", mapping=PointForm)
@@ -238,19 +239,19 @@ assert ptform.validate() is False
 print("""
 <form method="POST" action="#">
   {lform.x.errors}{lform.y.errors}  {rform.x.errors}{rform.y.errors}
-  <label>{lform.x.label}<input name="{lform.x.name}" value="{lform.x.value}" type="{lform.x.widget}"/></label>
-  <label>{lform.y.label}<input name="{lform.y.name}" value="{lform.y.value}" type="{lform.y.widget}"/></label>
-  <label>{rform.x.label}<input name="{rform.x.name}" value="{rform.x.value}" type="{rform.x.widget}"/></label>
-  <label>{rform.y.label}<input name="{rform.y.name}" value="{rform.y.value}" type="{rform.y.widget}"/></label>
+  <label>{lform.x.label}<input name="{parent.left.name}.{lform.x.name}" value="{lform.x.value}" type="{lform.x.widget}"/></label>
+  <label>{lform.y.label}<input name="{parent.left.name}.{lform.y.name}" value="{lform.y.value}" type="{lform.y.widget}"/></label>
+  <label>{rform.x.label}<input name="{parent.right.name}.{rform.x.name}" value="{rform.x.value}" type="{rform.x.widget}"/></label>
+  <label>{rform.y.label}<input name="{parent.right.name}.{rform.y.name}" value="{rform.y.value}" type="{rform.y.widget}"/></label>
 <form>
-""".format(lform=ptform.left.value, rform=ptform.right.value))
+""".format(parent=ptform, lform=ptform.left.value, rform=ptform.right.value))
 
 ## output
 # <form method="POST" action="#">
 #   [][]  []['not integer']
-#   <label>X<input name="x" value="10" type="number"/></label>
-#   <label>Y<input name="y" value="20" type="number"/></label>
-#   <label>X<input name="x" value="100" type="number"/></label>
-#   <label>Y<input name="y" value="20@" type="number"/></label>
+#   <label>X<input name="left.x" value="10" type="number"/></label>
+#   <label>Y<input name="left.y" value="20" type="number"/></label>
+#   <label>X<input name="right.x" value="100" type="number"/></label>
+#   <label>Y<input name="right.y" value="20@" type="number"/></label>
 # <form>
 ```
